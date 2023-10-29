@@ -9,19 +9,63 @@
 </head>
 
 <body>
+  <div>
+    <button id="button">Incrementar</button>
+  </div>
+
   <script>
-    const initialState = {
-      nome: "André",
-      id: 199,
+    //Constantes
+    const INCREMENTAR = 'INCREMENTAR';
+    const REDUZIR = 'REDUZIR';
+    const SOMAR = 'SOMAR';
+
+    //Action Creator
+    function somar(payload) {
+      return {
+        type: SOMAR,
+        payload
+      }
     }
 
+    function incrementar() {
+      return {
+        type: INCREMENTAR,
+      }
+    }
+    function reduzir() {
+      return {
+        type: REDUZIR,
+      }
+    }
+
+
+    const initialState = 10
+
     function reducer(state = initialState, action) {
+      if (action.type === INCREMENTAR) return state + 1
+      if (action.type === REDUZIR) return state - 1
+      if (action.type === SOMAR) return state + action.payload
       return state
     }
 
     const store = Redux.createStore(reducer);
-    const state = store.getState()
-    console.log(state.nome)
+    let state = store.getState()
+    console.log(state)
+
+    store.dispatch(somar(25))
+    store.dispatch(incrementar())
+    store.dispatch(reduzir())
+
+    state = store.getState()
+    console.log(state)
+
+    const button = document.getElementById('button')
+    button.addEventListener('click', () => {
+      store.dispatch(incrementar())
+      console.log(store.getState())
+    }
+    );
+
 
   </script>
 </body>
