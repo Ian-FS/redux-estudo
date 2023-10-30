@@ -10,6 +10,7 @@
 
 <body>
   <div>
+    <h1>Total: <span id="total"></span></h1>
     <button id="button">Incrementar</button>
   </div>
 
@@ -49,20 +50,27 @@
     }
 
     const store = Redux.createStore(reducer);
-    let state = store.getState()
-    console.log(state)
+
 
     store.dispatch(somar(25))
     store.dispatch(incrementar())
     store.dispatch(reduzir())
 
-    state = store.getState()
-    console.log(state)
+    function render() {
+      const total = document.getElementById('total');
+      const state = store.getState()
+      total.innerText = state;
+    }
+
+    render();
+
+    const unsubcribe = store.subscribe(render);
+    unsubcribe()
+
 
     const button = document.getElementById('button')
     button.addEventListener('click', () => {
       store.dispatch(incrementar())
-      console.log(store.getState())
     }
     );
 
