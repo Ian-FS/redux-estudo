@@ -10,15 +10,25 @@
 
 <body>
   <div>
+    <button id="button-abrir">Abrir</button>
+    <button id="button-fechar">Fechar</button>
     <h1>Total: <span id="total"></span></h1>
-    <button id="button">Incrementar</button>
+    <button id="button-incrementar">Incrementar</button>
+    <button id="button-decrementar">Decrementar</button>
+    <button id="button-somar">Somar</button>
   </div>
 
   <script>
     //Constantes
     const INCREMENTAR = 'INCREMENTAR';
-    const REDUZIR = 'REDUZIR';
+    const DECREMENTAR = 'DECREMENTAR';
     const SOMAR = 'SOMAR';
+
+    const buttonIncrementar = document.getElementById('button-incrementar');
+    const buttonSomar = document.getElementById('button-somar');
+    const buttonDecrementar = document.getElementById('button-decrementar');
+    const buttonAbrir = document.getElementById('button-abrir');
+    const buttonFechar = document.getElementById('button-fechar');
 
     //Action Creator
     function somar(payload) {
@@ -27,53 +37,100 @@
         payload
       }
     }
-
     function incrementar() {
       return {
         type: INCREMENTAR,
       }
     }
-    function reduzir() {
+    function decrementar() {
       return {
-        type: REDUZIR,
+        type: DECREMENTAR,
       }
     }
 
-
     const initialState = 10
 
-    function reducer(state = initialState, action) {
-      if (action.type === INCREMENTAR) return state + 1
-      if (action.type === REDUZIR) return state - 1
-      if (action.type === SOMAR) return state + action.payload
-      return state
+    function contador(state = initialState, action) {
+      switch (action.type) {
+        case INCREMENTAR:
+          return state + 1
+        case DECREMENTAR:
+          return state - 1
+        case SOMAR:
+          return state + action.payload
+        default:
+          return state
+          break;
+      }
+    }
+    function modal(state = true, action) {
+      switch (action.type) {
+        case 'FECHAR':
+          return false
+        case 'ABRIR':
+          return true
+        default:
+          return state
+      }
     }
 
+    const reducer = Redux.combineReducers({ contador, modal })
     const store = Redux.createStore(reducer);
-
-
-    store.dispatch(somar(25))
-    store.dispatch(incrementar())
-    store.dispatch(reduzir())
 
     function render() {
       const total = document.getElementById('total');
-      const state = store.getState()
-      total.innerText = state;
+      const { contador, modal } = store.getState()
+      total.innerText = contador;
+      console.log(modal)
+      if (modal) {
+        total.style.display = 'inline-block';
+        buttonIncrementar.disabled = false
+        buttonDecrementar.disabled = false
+        buttonSomar.disabled = false
+        buttonAbrir.disabled = true
+        buttonFechar.disabled = false
+      }
+      if (!modal) {
+        total.style.display = 'none';
+        buttonIncrementar.disabled = true
+        buttonDecrementar.disabled = true
+        buttonSomar.disabled = true
+        buttonAbrir.disabled = false
+        buttonFechar.disabled = true
+      }
     }
 
     render();
 
     const unsubcribe = store.subscribe(render);
-    unsubcribe()
+    // unsubcribe()
 
 
-    const button = document.getElementById('button')
-    button.addEventListener('click', () => {
+
+    buttonIncrementar.addEventListener('click', () => {
       store.dispatch(incrementar())
     }
     );
 
+    buttonSomar.addEventListener('click', () => {
+      store.dispatch(somar(10))
+    }
+    );
+
+    buttonDecrementar.addEventListener('click', () => {
+      store.dispatch(decrementar())
+    }
+    );
+
+    buttonAbrir.addEventListener('click', () => {
+      store.dispatch({ type: 'ABRIR' })
+    }
+    );
+
+    buttonFechar.addEventListener('click', () => {
+      store.dispatch({ type: 'FECHAR' })
+    }
+    );
 
   </script>
 </body>
