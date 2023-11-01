@@ -9,129 +9,22 @@
 </head>
 
 <body>
-  <div>
-    <button id="button-abrir">Abrir</button>
-    <button id="button-fechar">Fechar</button>
-    <h1>Total: <span id="total"></span></h1>
-    <button id="button-incrementar">Incrementar</button>
-    <button id="button-decrementar">Decrementar</button>
-    <button id="button-somar">Somar</button>
-  </div>
-
+  <div id="caixa" style="background: blue; width: 10px; height: 100px;"></div>
   <script>
-    //Constantes
-    const INCREMENTAR = 'INCREMENTAR';
-    const DECREMENTAR = 'DECREMENTAR';
-    const SOMAR = 'SOMAR';
-
-    const buttonIncrementar = document.getElementById('button-incrementar');
-    const buttonSomar = document.getElementById('button-somar');
-    const buttonDecrementar = document.getElementById('button-decrementar');
-    const buttonAbrir = document.getElementById('button-abrir');
-    const buttonFechar = document.getElementById('button-fechar');
-
-    //Action Creator
-    function somar(payload) {
-      return {
-        type: SOMAR,
-        payload
-      }
-    }
-    function incrementar() {
-      return {
-        type: INCREMENTAR,
-      }
-    }
-    function decrementar() {
-      return {
-        type: DECREMENTAR,
-      }
-    }
-
-    const initialState = 10
-
-    function contador(state = initialState, action) {
+    function reducer(state = 0, action) {
       switch (action.type) {
-        case INCREMENTAR:
-          return state + 1
-        case DECREMENTAR:
-          return state - 1
-        case SOMAR:
-          return state + action.payload
+        case 'MODIFICAR_WIDTH':
+          const caixa = document.getElementById('caixa');
+          caixa.style.width = `${action.payload}px`;
+          return action.payload;
         default:
-          return state
-          break;
+          return state;
       }
     }
-    function modal(state = true, action) {
-      switch (action.type) {
-        case 'FECHAR':
-          return false
-        case 'ABRIR':
-          return true
-        default:
-          return state
-      }
-    }
-
-    const reducer = Redux.combineReducers({ contador, modal })
     const store = Redux.createStore(reducer);
+    store.dispatch({ type: 'MODIFICAR_WIDTH', payload: 100 });
 
-    function render() {
-      const total = document.getElementById('total');
-      const { contador, modal } = store.getState()
-      total.innerText = contador;
-      console.log(modal)
-      if (modal) {
-        total.style.display = 'inline-block';
-        buttonIncrementar.disabled = false
-        buttonDecrementar.disabled = false
-        buttonSomar.disabled = false
-        buttonAbrir.disabled = true
-        buttonFechar.disabled = false
-      }
-      if (!modal) {
-        total.style.display = 'none';
-        buttonIncrementar.disabled = true
-        buttonDecrementar.disabled = true
-        buttonSomar.disabled = true
-        buttonAbrir.disabled = false
-        buttonFechar.disabled = true
-      }
-    }
-
-    render();
-
-    const unsubcribe = store.subscribe(render);
-    // unsubcribe()
-
-
-
-    buttonIncrementar.addEventListener('click', () => {
-      store.dispatch(incrementar())
-    }
-    );
-
-    buttonSomar.addEventListener('click', () => {
-      store.dispatch(somar(10))
-    }
-    );
-
-    buttonDecrementar.addEventListener('click', () => {
-      store.dispatch(decrementar())
-    }
-    );
-
-    buttonAbrir.addEventListener('click', () => {
-      store.dispatch({ type: 'ABRIR' })
-    }
-    );
-
-    buttonFechar.addEventListener('click', () => {
-      store.dispatch({ type: 'FECHAR' })
-    }
-    );
-
+    console.log(store.getState())
   </script>
 </body>
 
