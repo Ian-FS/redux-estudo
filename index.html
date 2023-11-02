@@ -9,20 +9,42 @@
 </head>
 
 <body>
-  <div id="caixa" style="background: blue; width: 10px; height: 100px;"></div>
+  <div id="caixa" style="background: blue; height: 100px;"></div>
   <script>
     function reducer(state = 0, action) {
       switch (action.type) {
         case 'MODIFICAR_WIDTH':
-          const caixa = document.getElementById('caixa');
-          caixa.style.width = `${action.payload}px`;
+          // const caixa = document.getElementById('caixa');
+          // caixa.style.width = `${action.payload}px`;
           return action.payload;
         default:
           return state;
       }
     }
-    const store = Redux.createStore(reducer);
-    store.dispatch({ type: 'MODIFICAR_WIDTH', payload: 100 });
+
+    function modificaWidth(value) {
+      return { type: 'MODIFICAR_WIDTH', payload: value }
+    }
+    function modificaWidthRender() {
+      const caixa = document.getElementById('caixa');
+      caixa.style.width = `${store.getState()}px`;
+    }
+
+    const store = Redux.createStore(
+      reducer,
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    );
+
+    function render() {
+      modificaWidthRender()
+    }
+
+    store.subscribe(render);
+
+    store.dispatch(modificaWidth(100));
+    store.dispatch(modificaWidth(50));
+    store.dispatch(modificaWidth(10));
+    store.dispatch(modificaWidth(300));
 
     console.log(store.getState())
   </script>
