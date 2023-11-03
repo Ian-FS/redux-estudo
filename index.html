@@ -9,42 +9,31 @@
 </head>
 
 <body>
-  <div id="caixa" style="background: blue; height: 100px;"></div>
+  <div></div>
   <script>
-    function reducer(state = 0, action) {
+    const inicialState = {
+      nome: "Ian",
+      idade: 31,
+    }
+
+    function reducer(state = inicialState, action) {
       switch (action.type) {
-        case 'MODIFICAR_WIDTH':
-          // const caixa = document.getElementById('caixa');
-          // caixa.style.width = `${action.payload}px`;
-          return action.payload;
+        case 'MODIFICAR_NOME':
+          return { ...inicialState, nome: action.payload };
         default:
           return state;
       }
     }
 
-    function modificaWidth(value) {
-      return { type: 'MODIFICAR_WIDTH', payload: value }
-    }
-    function modificaWidthRender() {
-      const caixa = document.getElementById('caixa');
-      caixa.style.width = `${store.getState()}px`;
-    }
 
     const store = Redux.createStore(
       reducer,
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     );
 
-    function render() {
-      modificaWidthRender()
-    }
-
-    store.subscribe(render);
-
-    store.dispatch(modificaWidth(100));
-    store.dispatch(modificaWidth(50));
-    store.dispatch(modificaWidth(10));
-    store.dispatch(modificaWidth(300));
+    store.dispatch({ type: 'MODIFICAR_NOME', payload: 'Mariah' })
+    store.dispatch({ type: 'MODIFICAR_NOME', payload: 'João' })
+    store.dispatch({ type: 'MODIFICAR_NOME', payload: 'Pedro' })
 
     console.log(store.getState())
   </script>
