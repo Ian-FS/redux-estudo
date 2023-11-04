@@ -6,24 +6,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Redux</title>
   <script src="./redux.min.js"></script>
+  <script src="./immer.umd.production.min.js"></script>
 </head>
 
 <body>
   <div></div>
   <script>
+
+    const obj1 = {
+      nome: "Ian",
+      idade: 31,
+    }
+
+
+    const obj2 = immer.produce(obj1, (draft) => {
+      draft.idade = 34;
+    })
+
+    // console.log(obj1)
+    // console.log(obj2)
+
+
+
+
+
     const inicialState = {
       nome: "Ian",
       idade: 31,
     }
 
-    function reducer(state = inicialState, action) {
+    const reducer = immer.produce((state, action) => {
       switch (action.type) {
         case 'MODIFICAR_NOME':
-          return { ...inicialState, nome: action.payload };
-        default:
-          return state;
+          state.nome = action.payload
+          break
       }
-    }
+    }, inicialState)
 
 
     const store = Redux.createStore(
@@ -35,7 +53,6 @@
     store.dispatch({ type: 'MODIFICAR_NOME', payload: 'João' })
     store.dispatch({ type: 'MODIFICAR_NOME', payload: 'Pedro' })
 
-    console.log(store.getState())
   </script>
 </body>
 
