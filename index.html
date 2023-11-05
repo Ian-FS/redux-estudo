@@ -10,48 +10,15 @@
 </head>
 
 <body>
-  <div></div>
-  <script>
+  <script type="module">
+    import store from './store/configureStore.js'
+    import { incrementar } from './store/contador.js'
 
-    const obj1 = {
-      nome: "Ian",
-      idade: 31,
-    }
-
-
-    const obj2 = immer.produce(obj1, (draft) => {
-      draft.idade = 34;
+    store.subscribe(() => {
+      console.log('Funcionou!')
     })
 
-    // console.log(obj1)
-    // console.log(obj2)
-
-
-
-
-
-    const inicialState = {
-      nome: "Ian",
-      idade: 31,
-    }
-
-    const reducer = immer.produce((state, action) => {
-      switch (action.type) {
-        case 'MODIFICAR_NOME':
-          state.nome = action.payload
-          break
-      }
-    }, inicialState)
-
-
-    const store = Redux.createStore(
-      reducer,
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-    );
-
-    store.dispatch({ type: 'MODIFICAR_NOME', payload: 'Mariah' })
-    store.dispatch({ type: 'MODIFICAR_NOME', payload: 'João' })
-    store.dispatch({ type: 'MODIFICAR_NOME', payload: 'Pedro' })
+    store.dispatch(incrementar());
 
   </script>
 </body>
