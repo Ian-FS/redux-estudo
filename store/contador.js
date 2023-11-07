@@ -41,7 +41,9 @@ const aulas = [
   },
 ];
 
-const incrementarTempo = () => ({ type: 'aluno/INCREMENTAR_TEMPO' });
+const incrementarTempo = () => ({
+  type: 'aluno/INCREMENTAR_TEMPO',
+});
 const reduzirTempo = () => ({ type: 'aluno/REDUZIR_TEMPO' });
 const modificarEmail = (email) => ({
   type: 'aluno/MODIFICAR_EMAIL',
@@ -51,17 +53,15 @@ const completarAula = (id) => ({ type: id });
 const completarCurso = () => ({ type: 'aluno/COMPLETAR_CURSO' });
 const resetarCurso = () => ({ type: 'aluno/RESETAR  _CURSO' });
 
-const contadorTempo = (state = aluno.tempo, action) => {
+const alunoReducer = (state = aluno, action) => {
   switch (action.type) {
-    case incrementarTempo():
-      state + 1;
-      break;
-    case reduzirTempo():
-      state - 1;
-      break;
-
+    case 'aluno/INCREMENTAR_TEMPO':
+      return +1;
+    case 'aluno/REDUZIR_TEMPO':
+      return -1;
+    case 'aluno/MODIFICAR_EMAIL':
+      return action.payload;
     default:
-      state;
-      break;
+      return state;
   }
 };
