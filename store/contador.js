@@ -11,7 +11,9 @@
 // Crie um reducer para aluno e um para aulas.
 // Renderize na tela o nome, email, tempo restante e o total de aulas completas
 // Configure a DevTools
+//______________________________________________________________________________________________________
 
+//Contantes
 const aluno = {
   nome: 'André Rafael',
   email: 'andre@origamid.com',
@@ -41,6 +43,7 @@ const aulas = [
   },
 ];
 
+// Action Creators
 const incrementarTempo = () => ({
   type: 'aluno/INCREMENTAR_TEMPO',
 });
@@ -49,18 +52,35 @@ const modificarEmail = (email) => ({
   type: 'aluno/MODIFICAR_EMAIL',
   payload: email,
 });
-const completarAula = (id) => ({ type: id });
-const completarCurso = () => ({ type: 'aluno/COMPLETAR_CURSO' });
-const resetarCurso = () => ({ type: 'aluno/RESETAR  _CURSO' });
+const completarAula = (id) => ({ type: 'aula/COMPLETAR_AULA', payload: id });
+const completarCurso = () => ({ type: 'aula/COMPLETAR_CURSO' });
+const resetarCurso = () => ({ type: 'aula/RESETAR_CURSO' });
 
+//Redutores
 const alunoReducer = (state = aluno, action) => {
   switch (action.type) {
     case 'aluno/INCREMENTAR_TEMPO':
-      return +1;
+      return { ...state, diasRestantes: state.diasRestantes + 1 };
     case 'aluno/REDUZIR_TEMPO':
-      return -1;
+      return { ...state, diasRestantes: state.diasRestantes - 1 };
     case 'aluno/MODIFICAR_EMAIL':
-      return action.payload;
+      return { ...state, email: action.payload };
+    default:
+      return state;
+  }
+};
+
+const aulasReducer = (state = aulas, action) => {
+  switch (action.type) {
+    case 'aula/COMPLETAR_AULA':
+      return state.map((aula) => {
+        if (aula.id === action.payload) return { ...aula, completa: true };
+        else return { ...aula };
+      });
+    case 'aula/COMPLETAR_CURSO':
+      return state.map((aula) => ({ ...aula, completa: true }));
+    case 'aula/RESETAR_CURSO':
+      return state.map((aula) => ({ ...aula, completa: false }));
     default:
       return state;
   }
