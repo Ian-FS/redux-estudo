@@ -1,14 +1,14 @@
-// Usando o Redux (pode usar Immer ou Não).
-// Crie uma store contendo os estados iniciais abaixo
-// Crie as seguintes ações:
-// aluno/INCREMENTAR_TEMPO, adiciona 1 dia de acesso
-// aluno/REDUZIR_TEMPO, reduz 1 dia de acesso
-// aluno/MODIFICAR_EMAIL(email), modifica o email do usuário
-// aulas/COMPLETAR_AULA(id), completa a aula com base no ID passado
-// aulas/COMPLETAR_CURSO, completa todas as aulas
-// aulas/RESETAR_CURSO, reseta todas as aulas completas
-// Crie constantes e action creators para as ações.
-// Crie um reducer para aluno e um para aulas.
+// Usando o Redux (pode usar Immer ou Não). Completo
+// Crie uma store contendo os estados iniciais abaixo. Completo
+// Crie as seguintes ações: Completo
+// aluno/INCREMENTAR_TEMPO, adiciona 1 dia de acesso. Completo
+// aluno/REDUZIR_TEMPO, reduz 1 dia de acesso. Completo
+// aluno/MODIFICAR_EMAIL(email), modifica o email do usuário. Completo
+// aulas/COMPLETAR_AULA(id), completa a aula com base no ID passado. Completo
+// aulas/COMPLETAR_CURSO, completa todas as aulas. Completo
+// aulas/RESETAR_CURSO, reseta todas as aulas completas. Completo
+// Crie constantes e action creators para as ações. Completo
+// Crie um reducer para aluno e um para aulas. Completo
 // Renderize na tela o nome, email, tempo restante e o total de aulas completas
 // Configure a DevTools
 //______________________________________________________________________________________________________
@@ -57,31 +57,45 @@ const completarCurso = () => ({ type: 'aula/COMPLETAR_CURSO' });
 const resetarCurso = () => ({ type: 'aula/RESETAR_CURSO' });
 
 //Redutores
-const alunoReducer = (state = aluno, action) => {
+const alunoReducer = immer.produce((state, action) => {
   switch (action.type) {
     case 'aluno/INCREMENTAR_TEMPO':
-      return { ...state, diasRestantes: state.diasRestantes + 1 };
+      state.diasRestantes = state.diasRestantes + 1;
+      break;
     case 'aluno/REDUZIR_TEMPO':
-      return { ...state, diasRestantes: state.diasRestantes - 1 };
+      state.diasRestantes = state.diasRestantes - 1;
+      break;
     case 'aluno/MODIFICAR_EMAIL':
-      return { ...state, email: action.payload };
+      state.email = action.payload;
+      break;
     default:
       return state;
   }
-};
+}, aluno);
 
-const aulasReducer = (state = aulas, action) => {
+const aulasReducer = immer.produce((state, action) => {
   switch (action.type) {
     case 'aula/COMPLETAR_AULA':
-      return state.map((aula) => {
-        if (aula.id === action.payload) return { ...aula, completa: true };
-        else return { ...aula };
+      state.map((aula) => {
+        if (aula.id === action.payload) aula.completa = true;
+        else aula;
       });
+      break;
     case 'aula/COMPLETAR_CURSO':
-      return state.map((aula) => ({ ...aula, completa: true }));
+      state.map((aula) => (aula.completa = true));
+      break;
     case 'aula/RESETAR_CURSO':
-      return state.map((aula) => ({ ...aula, completa: false }));
+      state.map((aula) => (aula.completa = false));
+      break;
     default:
       return state;
   }
-};
+}, aulas);
+
+const reducers = Redux.combineReducers({ alunoReducer, aulasReducer });
+const store = Redux.createStore(reducers);
+
+store.dispatch(reduzirTempo());
+store.dispatch(modificarEmail('andre@hotmail.com'));
+store.dispatch(completarCurso());
+console.log(store.getState());
