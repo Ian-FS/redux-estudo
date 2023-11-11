@@ -14,13 +14,13 @@
 //______________________________________________________________________________________________________
 
 //Contantes
-const aluno = {
+export const aluno = {
   nome: 'André Rafael',
   email: 'andre@origamid.com',
   diasRestantes: 120,
 };
 
-const aulas = [
+export const aulas = [
   {
     id: 1,
     nome: 'Design',

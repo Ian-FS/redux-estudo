@@ -10,8 +10,28 @@
 </head>
 
 <body>
+  <div>
+    <h1>Aluno</h1>
+    <p><b>Nome:</b> <span id="nome"></span></p>
+    <p><b>Email:</b> <span id="email"></span></p>
+    <p><b>Dias restantes:</b> <span id="diasRestantes"></span></p>
+    <p><b>Total aulas completas:</b> <span id="totalAulasCompletas"></span></p>
+  </div>
   <script type="module">
     import './store/contador.js'
+    import { aluno, aulas } from './store/contador.js'
+
+    const nome = document.getElementById('nome')
+    const email = document.getElementById('email')
+    const diasRestantes = document.getElementById('diasRestantes')
+    const totalAulasCompletas = document.getElementById('totalAulasCompletas')
+
+    console.log()
+    nome.innerText = aluno.nome
+    email.innerText = aluno.email
+    diasRestantes.innerText = aluno.diasRestantes
+    totalAulasCompletas.innerText = aulas.filter((aula) => aula.completa === true).length
+
   </script>
 </body>
 
