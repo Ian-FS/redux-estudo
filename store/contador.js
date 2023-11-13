@@ -93,9 +93,25 @@ const aulasReducer = immer.produce((state, action) => {
 }, aulas);
 
 const reducers = Redux.combineReducers({ alunoReducer, aulasReducer });
-const store = Redux.createStore(reducers);
+export const store = Redux.createStore(reducers);
 
-store.dispatch(reduzirTempo());
+function render() {
+  const nome = document.getElementById('nome');
+  const email = document.getElementById('email');
+  const diasRestantes = document.getElementById('diasRestantes');
+  const totalAulasCompletas = document.getElementById('totalAulasCompletas');
+
+  nome.innerText = store.getState().alunoReducer.nome;
+  email.innerText = store.getState().alunoReducer.email;
+  diasRestantes.innerText = store.getState().alunoReducer.diasRestantes;
+  totalAulasCompletas.innerText = store
+    .getState()
+    .aulasReducer.filter((aula) => aula.completa === true).length;
+}
+
+store.subscribe(render);
+
+// store.dispatch(reduzirTempo());
 store.dispatch(modificarEmail('andre@hotmail.com'));
-store.dispatch(completarCurso());
+// store.dispatch(completarCurso());
 console.log(store.getState());
