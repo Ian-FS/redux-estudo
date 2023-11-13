@@ -18,7 +18,33 @@
     <p><b>Total aulas completas:</b> <span id="totalAulasCompletas"></span></p>
   </div>
   <script type="module">
-    import './store/contador.js'
+    import store from './store/configureStore.js'
+    import { incrementarTempo, reduzirTempo, modificarEmail } from './store/alunosReducer.js'
+    import { completarAula, completarCurso, resetarCurso } from './store/aulasReducer.js'
+
+    function render() {
+      const nome = document.getElementById('nome');
+      const email = document.getElementById('email');
+      const diasRestantes = document.getElementById('diasRestantes');
+      const totalAulasCompletas = document.getElementById('totalAulasCompletas');
+
+      nome.innerText = store.getState().alunoReducer.nome;
+      console.log(store.getState().alunoReducer.nome)
+      email.innerText = store.getState().alunoReducer.email;
+      diasRestantes.innerText = store.getState().alunoReducer.diasRestantes;
+      totalAulasCompletas.innerText = store
+        .getState()
+        .aulasReducer.filter((aula) => aula.completa === true).length;
+
+    }
+    console.log(store.getState().alunoReducer)
+
+    store.subscribe(render);
+
+    store.dispatch(reduzirTempo());
+    store.dispatch(modificarEmail('andre@hotmail.com'));
+    store.dispatch(completarCurso());
+    console.log(store.getState());
 
   </script>
 </body>
