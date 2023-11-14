@@ -31,7 +31,7 @@ export const modificarEmail = (email) => ({
 });
 
 //Reducers
-const alunosReducer = immer.produce((state, action) => {
+const alunoReducer = immer.produce((state, action) => {
   switch (action.type) {
     case 'aluno/INCREMENTAR_TEMPO':
       state.diasRestantes = state.diasRestantes + 1;
@@ -47,4 +47,4 @@ const alunosReducer = immer.produce((state, action) => {
   }
 }, aluno);
 
-export default alunosReducer;
+export default alunoReducer;

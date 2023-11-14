@@ -19,7 +19,7 @@
   </div>
   <script type="module">
     import store from './store/configureStore.js'
-    import { incrementarTempo, reduzirTempo, modificarEmail } from './store/alunosReducer.js'
+    import { incrementarTempo, reduzirTempo, modificarEmail } from './store/alunoReducer.js'
     import { completarAula, completarCurso, resetarCurso } from './store/aulasReducer.js'
 
     function render() {
@@ -29,7 +29,6 @@
       const totalAulasCompletas = document.getElementById('totalAulasCompletas');
 
       nome.innerText = store.getState().alunoReducer.nome;
-      console.log(store.getState().alunoReducer.nome)
       email.innerText = store.getState().alunoReducer.email;
       diasRestantes.innerText = store.getState().alunoReducer.diasRestantes;
       totalAulasCompletas.innerText = store
@@ -37,15 +36,12 @@
         .aulasReducer.filter((aula) => aula.completa === true).length;
 
     }
-    console.log(store.getState().alunoReducer)
-
+    render();
     store.subscribe(render);
 
     store.dispatch(reduzirTempo());
     store.dispatch(modificarEmail('andre@hotmail.com'));
     store.dispatch(completarCurso());
-    console.log(store.getState());
-
   </script>
 </body>
 

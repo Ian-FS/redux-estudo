@@ -1,7 +1,7 @@
-import alunoReducer from './alunosReducer.js';
-import aulaReducer from './aulasReducer.js';
+import alunoReducer from './alunoReducer.js';
+import aulasReducer from './aulasReducer.js';
 
-const reducers = Redux.combineReducers({ alunoReducer, aulaReducer });
+const reducers = Redux.combineReducers({ alunoReducer, aulasReducer });
 const store = Redux.createStore(
   reducers,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
