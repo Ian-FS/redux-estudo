@@ -13,37 +13,40 @@
 // Configure a DevTools
 //______________________________________________________________________________________________________
 
-//Contantes
+//Initial State
 export const aluno = {
   nome: 'André Rafael',
   email: 'andre@origamid.com',
   diasRestantes: 120,
 };
 
+//Constantes
+const INCREMENTAR_TEMPO = 'aluno/INCREMENTAR_TEMPO';
+const REDUZIR_TEMPO = 'aluno/REDUZIR_TEMPO';
+const MODIFICAR_EMAIL = 'aluno/MODIFICAR_EMAIL';
+
 // Action Creators
 export const incrementarTempo = () => ({
-  type: 'aluno/INCREMENTAR_TEMPO',
+  type: INCREMENTAR_TEMPO,
 });
-export const reduzirTempo = () => ({ type: 'aluno/REDUZIR_TEMPO' });
+export const reduzirTempo = () => ({ type: REDUZIR_TEMPO });
 export const modificarEmail = (email) => ({
-  type: 'aluno/MODIFICAR_EMAIL',
+  type: MODIFICAR_EMAIL,
   payload: email,
 });
 
 //Reducers
 const alunoReducer = immer.produce((state, action) => {
   switch (action.type) {
-    case 'aluno/INCREMENTAR_TEMPO':
+    case INCREMENTAR_TEMPO:
       state.diasRestantes = state.diasRestantes + 1;
       break;
-    case 'aluno/REDUZIR_TEMPO':
+    case REDUZIR_TEMPO:
       state.diasRestantes = state.diasRestantes - 1;
       break;
-    case 'aluno/MODIFICAR_EMAIL':
+    case MODIFICAR_EMAIL:
       state.email = action.payload;
       break;
-    default:
-      return state;
   }
 }, aluno);
 

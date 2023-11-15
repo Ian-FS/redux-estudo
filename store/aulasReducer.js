@@ -1,4 +1,4 @@
-//Contantes
+//Initial State
 const aulas = [
   {
     id: 1,
@@ -22,31 +22,34 @@ const aulas = [
   },
 ];
 
+//Contantes
+const COMPLETAR_AULA = 'aula/COMPLETAR_AULA';
+const COMPLETAR_CURSO = 'aula/COMPLETAR_CURSO';
+const RESETAR_CURSO = 'aula/RESETAR_CURSO';
+
 //Action Creators
 export const completarAula = (id) => ({
-  type: 'aula/COMPLETAR_AULA',
+  type: COMPLETAR_AULA,
   payload: id,
 });
-export const completarCurso = () => ({ type: 'aula/COMPLETAR_CURSO' });
-export const resetarCurso = () => ({ type: 'aula/RESETAR_CURSO' });
+export const completarCurso = () => ({ type: COMPLETAR_CURSO });
+export const resetarCurso = () => ({ type: RESETAR_CURSO });
 
 //Reducer
 const aulasReducer = immer.produce((state, action) => {
   switch (action.type) {
-    case 'aula/COMPLETAR_AULA':
+    case COMPLETAR_AULA:
       state.map((aula) => {
         if (aula.id === action.payload) return (aula.completa = true);
         else return aula;
       });
       break;
-    case 'aula/COMPLETAR_CURSO':
-      state.map((aula) => (aula.completa = true));
+    case COMPLETAR_CURSO:
+      state.forEach((aula) => (aula.completa = true));
       break;
-    case 'aula/RESETAR_CURSO':
-      state.map((aula) => (aula.completa = false));
+    case RESETAR_CURSO:
+      state.forEach((aula) => (aula.completa = false));
       break;
-    default:
-      return state;
   }
 }, aulas);
 
