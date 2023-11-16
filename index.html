@@ -28,12 +28,12 @@
       const diasRestantes = document.getElementById('diasRestantes');
       const totalAulasCompletas = document.getElementById('totalAulasCompletas');
 
-      nome.innerText = store.getState().alunoReducer.nome;
-      email.innerText = store.getState().alunoReducer.email;
-      diasRestantes.innerText = store.getState().alunoReducer.diasRestantes;
-      totalAulasCompletas.innerText = store
-        .getState()
-        .aulasReducer.filter((aula) => aula.completa === true).length;
+      const { alunoReducer, aulasReducer } = store.getState()
+
+      nome.innerText = alunoReducer.nome;
+      email.innerText = alunoReducer.email;
+      diasRestantes.innerText = alunoReducer.diasRestantes;
+      totalAulasCompletas.innerText = aulasReducer.filter((aula) => aula.completa === true).length;
 
     }
     render();
