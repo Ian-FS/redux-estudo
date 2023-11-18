@@ -1,11 +1,11 @@
-const li = Array.from(document.querySelectorAll('li'));
-
-const getElementAttr = (key) => (el) => el.getAttribute(key);
-
-const getAttrDataSlide = getElementAttr('data-slide');
-const getAttrId = getElementAttr('id');
-
-const dataSLideList = li.map(getAttrDataSlide);
-const idList = li.map(getAttrId);
-
-console.log(dataSLideList, idList);
+// considere esse reducer para os próximos exemplos
+function reducer(state = 0, action) {
+  switch (action.type) {
+    case 'INCREMENTAR':
+      return state + 1;
+    case 'REDUZIR':
+      return state - 1;
+    default:
+      return state;
+  }
+}
