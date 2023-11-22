@@ -1,4 +1,3 @@
-// considere esse reducer para os próximos exemplos
 function reducer(state = 0, action) {
   switch (action.type) {
     case 'INCREMENTAR':
@@ -17,14 +16,11 @@ const logger = (store) => (next) => (action) => {
   const result = next(action);
   console.log('NEW_STATE', store.getState());
   console.groupEnd();
-
   return result;
 };
 
-const { applyMiddleware, compose } =
-  window.__REDUX_DEVTOOLS_EXTESION_COMPOSE__ || Redux;
-
-const composeEnhancers = compose;
+const { applyMiddleware, compose } = Redux;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const enhancer = composeEnhancers(applyMiddleware(logger));
 
