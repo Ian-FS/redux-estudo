@@ -10,8 +10,6 @@ function reducer(state = 0, action) {
   }
 }
 
-const { applyMiddleware, compose } = Redux;
-
 const logger = (store) => (next) => (action) => {
   console.group(action.type);
   console.log('ACTION', action);
@@ -23,9 +21,14 @@ const logger = (store) => (next) => (action) => {
   return result;
 };
 
-const middleware = Redux.applyMiddleware(logger);
+const { applyMiddleware, compose } =
+  window.__REDUX_DEVTOOLS_EXTESION_COMPOSE__ || Redux;
 
-const store = Redux.createStore(reducer, middleware);
+const composeEnhancers = compose;
+
+const enhancer = composeEnhancers(applyMiddleware(logger));
+
+const store = Redux.createStore(reducer, enhancer);
 
 console.log(store.getState());
 
