@@ -4,14 +4,18 @@ const initialState = {
   error: null,
 };
 
+const fetchStarted = 'FETCH_STARTED';
+const fetchSuccess = 'FETCH_SUCCESS';
+const fetchError = 'FETCH_ERROR';
+
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case 'FETCH_STARTED':
+    case fetchStarted:
       return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
-      return { data: action.payload, loading: false, error: null };
-    case 'FETCH_ERROR':
-      return { data: null, loading: false, error: action.payload };
+    case fetchSuccess:
+      return { loading: false, data: action.payload, error: null };
+    case fetchError:
+      return { loading: false, data: null, error: action.payload };
     default:
       return state;
   }
@@ -24,12 +28,12 @@ const store = Redux.createStore(reducer, enhancer);
 
 async function fetchUrl(dispatch, url) {
   try {
-    dispatch({ type: 'FETCH_STARTED' });
+    dispatch({ type: fetchStarted });
     const data = await fetch(url).then((r) => r.json());
-    dispatch({ type: 'FETCH_SUCCESS', payload: data });
+    dispatch({ type: fetchSuccess, payload: data });
   } catch (error) {
-    dispatch({ type: 'FETCH_ERROR', payload: error.message });
+    dispatch({ type: fetchError, payload: error.message });
+    console.log(error.message);
   }
 }
-
-fetchUrl(store.dispatch, 'https://dogsapi.origamid.dev/json/api/photos');
+fetchUrl(store.dispatch, 'https://dogsapio.origamid.dev/json/api/photo');
