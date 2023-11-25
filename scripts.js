@@ -21,19 +21,30 @@ function reducer(state = initialState, action) {
   }
 }
 
+const thunk = (store) => (next) => (action) => {
+  if (typeof action === 'function') {
+    return action();
+  }
+  return next(action);
+};
+
 const { applyMiddleware, compose } = Redux;
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const enhancer = composeEnhancers(applyMiddleware());
+const enhancer = composeEnhancers(applyMiddleware(thunk));
 const store = Redux.createStore(reducer, enhancer);
 
-async function fetchUrl(dispatch, url) {
-  try {
-    dispatch({ type: fetchStarted });
-    const data = await fetch(url).then((r) => r.json());
-    dispatch({ type: fetchSuccess, payload: data });
-  } catch (error) {
-    dispatch({ type: fetchError, payload: error.message });
-    console.log(error.message);
-  }
+function fetchUrl(dispatch, url) {
+  return async () => {
+    try {
+      dispatch({ type: fetchStarted });
+      const data = await fetch(url).then((r) => r.json());
+      dispatch({ type: fetchSuccess, payload: data });
+    } catch (error) {
+      dispatch({ type: fetchError, payload: error.message });
+      console.log(error.message);
+    }
+  };
 }
-fetchUrl(store.dispatch, 'https://dogsapio.origamid.dev/json/api/photo');
+store.dispatch(
+  fetchUrl(store.dispatch, 'https://dogsapio.origamid.dev/json/api/photo'),
+);
