@@ -23,7 +23,7 @@ function reducer(state = initialState, action) {
 
 const thunk = (store) => (next) => (action) => {
   if (typeof action === 'function') {
-    return action();
+    return action(store.dispatch);
   }
   return next(action);
 };
@@ -33,8 +33,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const enhancer = composeEnhancers(applyMiddleware(thunk));
 const store = Redux.createStore(reducer, enhancer);
 
-function fetchUrl(dispatch, url) {
-  return async () => {
+function fetchUrl(url) {
+  return async (dispatch) => {
     try {
       dispatch({ type: fetchStarted });
       const data = await fetch(url).then((r) => r.json());
@@ -45,6 +45,4 @@ function fetchUrl(dispatch, url) {
     }
   };
 }
-store.dispatch(
-  fetchUrl(store.dispatch, 'https://dogsapio.origamid.dev/json/api/photo'),
-);
+store.dispatch(fetchUrl('https://dogsapi.origamid.dev/json/api/photo'));
